@@ -13,3 +13,192 @@ to the Git repository [10].
 • Configure Jenkins to create a pipeline project that builds, tests, and deploys the
 application using Docker and Kubernetes, and visualize the deployment through
 Docker Desktop [20
+
+
+Output varlanaalum code aavathu podu
+
+Answer:
+1. HTML Web Page (Merchandise Company)
+Create a file: index.html
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Merchandise Store</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+        .product h3 {
+            margin: 0;
+        }
+        .price {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>ABC Merchandise Company</h1>
+    <p>Your one-stop shop for clothing, accessories & gadgets</p>
+</header>
+
+<div class="container">
+    <h2>Our Products</h2>
+
+    <div class="products">
+
+        <div class="product">
+            <h3>T-Shirt</h3>
+            <p>Comfortable cotton t-shirt</p>
+            <p class="price">₹500</p>
+        </div>
+
+        <div class="product">
+            <h3>Smart Watch</h3>
+            <p>Track your fitness and health</p>
+            <p class="price">₹2500</p>
+        </div>
+
+        <div class="product">
+            <h3>Backpack</h3>
+            <p>Stylish and durable bag</p>
+            <p class="price">₹1200</p>
+        </div>
+
+        <div class="product">
+            <h3>Sunglasses</h3>
+            <p>UV protected stylish glasses</p>
+            <p class="price">₹800</p>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+👉 This satisfies:
+Header ✔
+Company details ✔
+Product list ✔
+Name, description, price ✔
+Clean UI ✔
+
+✅ 2. GitHub Steps
+Bash
+git init
+git add .
+git commit -m "Initial commit - Merchandise webpage"
+git branch -M main
+git remote add origin https://github.com/your-username/merch-store.git
+git push -u origin main
+
+
+✅ 3. Dockerize the Application
+Create file: Dockerfile
+Dockerfile
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
+Build & run:
+Bash
+docker build -t merch-app .
+docker run -d -p 8080:80 merch-app
+👉 Open in browser:
+http://localhost:8080
+
+
+✅ 4. Jenkins Pipeline (IMPORTANT for exam)
+Create Jenkinsfile
+Groovy
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/your-username/merch-store.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t merch-app .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d -p 8080:80 merch-app'
+            }
+        }
+    }
+}
+
+
+✅ 5. Kubernetes Deployment
+Create: deployment.yaml
+YAML
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: merch-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: merch
+  template:
+    metadata:
+      labels:
+        app: merch
+    spec:
+      containers:
+      - name: merch-container
+        image: merch-app
+        ports:
+        - containerPort: 80
+Create: service.yaml
+YAML
+apiVersion: v1
+kind: Service
+metadata:
+  name: merch-service
+spec:
+  type: NodePort
+  selector:
+    app: merch
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30007
+Run:
+Bash
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml

@@ -1,3 +1,15 @@
 hi
 hello
 hi
+Design and develop a Merchandise Company Web Page using HTML that showcases products
+offered by a company in a structured and visually appealing manner. The webpage should
+include a header section with the company name and details about the company. The main
+content should display a list of merchandise items (such as clothing, accessories, or gadgets),
+where each product includes its name, description, and price. Maintain the source code in a
+GitHub repository [10]
+• Clone the repository into VS Code, make any updates, commit and push the changes
+to the Git repository [10].
+• Containerize the application using Docker and prepare it for deployment [10].
+• Configure Jenkins to create a pipeline project that builds, tests, and deploys the
+application using Docker and Kubernetes, and visualize the deployment through
+Docker Desktop [20

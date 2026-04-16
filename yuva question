@@ -16,3 +16,182 @@ application using Docker and Kubernetes, and visualize the deployment through
 Docker Desktop [20]
 
 give me step by step process include index.html code,docker file and all yaml file give me deplyemnt process also
+       answer:university-dept-website/
+│
+├── index.html
+├── Dockerfile
+├── deployment.yaml
+├── service.yaml
+└── Jenkinsfile
+ hhhhtml code :<!DOCTYPE html>
+<html>
+<head>
+    <title>Computer Science Department</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+        }
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+        }
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>ABC University</h1>
+    <p>Excellence in Education and Innovation</p>
+    <h3>Head: Dr. Ramesh Kumar (HOD)</h3>
+</header>
+
+<section>
+    <h2>About Department</h2>
+    <p>The Computer Science Department focuses on cutting-edge technologies like AI, Cyber Security, and Data Science.</p>
+</section>
+
+<section>
+    <h2>Courses Offered</h2>
+    <ul>
+        <li>B.Tech CSE – Core Computer Science</li>
+        <li>M.Tech Cyber Security</li>
+        <li>M.Tech Artificial Intelligence</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Faculty</h2>
+    <p>Dr. Anitha – Professor – AI</p>
+    <p>Mr. Raj – Assistant Professor – Cyber Security</p>
+</section>
+
+<section>
+    <h2>Contact</h2>
+    <p>Address: Chennai, Tamil Nadu</p>
+    <p>Phone: 9876543210</p>
+    <p>Email: cse@abcuniv.edu</p>
+</section>
+
+<footer>
+    <p>© 2026 ABC University</p>
+</footer>
+
+</body>
+</html>
+    push to github:
+      git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/your-username/university-dept-website.git
+git push -u origin main
+
+     clone repository:
+      git clone https://github.com/your-username/university-dept-website.git
+cd university-dept-website
+
+     make changes :
+      git add .
+git commit -m "Updated webpage"
+git push
+
+     dockerfile:     
+      FROM nginx:alpine
+
+COPY index.html /usr/share/nginx/html/index.html
+
+EXPOSE 80
+
+         build docker image :
+docker build -t university-website .
+     Run docker:
+      docker run -d -p 8080:80 university-website
+      open browser:
+       http://localhost:8080
+       push docker to github:
+        docker tag university-website your-dockerhub-username/university-website
+docker push your-dockerhub-username/university-website
+
+   ddeploayment.xaml
+      apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: university-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: university
+  template:
+    metadata:
+      labels:
+        app: university
+    spec:
+      containers:
+      - name: university-container
+        image: your-dockerhub-username/university-website
+        ports:
+        - containerPort: 80
+    YYAML code:
+      apiVersion: v1
+kind: Service
+metadata:
+  name: university-service
+spec:
+  type: NodePort
+  selector:
+    app: university
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30007
+      ci/cd pipeline script:
+     pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/your-username/university-dept-website.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t university-website .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker tag university-website your-dockerhub-username/university-website'
+                sh 'docker push your-dockerhub-username/university-website'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
+            }
+        }
+    }
+}
+
+
+     
+
